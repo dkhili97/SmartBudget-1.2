@@ -4,8 +4,10 @@ import path from 'path';
 async function createReleaseAndUploadApk() {
   const token = process.env.GITHUB_TOKEN || process.argv[2];
   const repo = process.argv[3] || 'dkhili97/SmartBudget-1.2';
-  const tag = process.argv[4] || 'v1.5.1';
-  const apkPath = path.resolve('SmartBudget.apk');
+  const tag = process.argv[4] || 'v1.6.0';
+  const apkPath = fs.existsSync('release-artifacts/SmartBudget.apk')
+    ? path.resolve('release-artifacts/SmartBudget.apk')
+    : path.resolve('SmartBudget.apk');
 
   if (!token) {
     console.log('Usage: node scripts/create-github-release.js <GITHUB_TOKEN> [repo] [tag]');
@@ -32,12 +34,14 @@ async function createReleaseAndUploadApk() {
     body: JSON.stringify({
       tag_name: tag,
       name: `SmartBudget ${tag}`,
-      body: `### 🚀 SmartBudget ${tag} (Version 100% Hors-Ligne)
+      body: `### 🌟 SmartBudget ${tag} (Mise à Jour Majeure UX & Hors-Ligne)
 
-- ✨ **Écran de chargement animé (Splash Screen)**
-- 💎 **Nouveau logo officiel & icônes Android adaptatives**
-- ⚡ **Conseiller financier et audit mathématique 100% hors-ligne**
-- 📲 **Système de mise à jour automatique intégré**`,
+- 📱 **Navigation Optimisée (5 Onglets)** : Interface allégée, fluide et ergonomique pour smartphone (Budget, Dépenses, Objectifs, Analyses, Conseiller).
+- 🚀 **Guide de Démarrage à Vide** : Assistant interactif d'onboarding permettant de choisir sa devise, son revenu et de démarrer immédiatement avec un budget vierge ou de démonstration.
+- ⚡ **Écran de Chargement Simplifié & Minimaliste** : Transition instantanée (~700ms) avec barre de chargement élégante.
+- 🔄 **Module de Mise à Jour 100% Automatique** : Écran épuré affichant uniquement la détection automatique et le bouton "Télécharger & Installer".
+- 🤖 **Conseiller IA & Diagnostic de Santé Fusionnés** : Score de santé financière, diagnostic mathématique autonome, simulateur "Et si..." et chat IA 100% hors-ligne.
+- 💾 **Sauvegarde Locale & Zéro Dépendance Serveur** : Vos données restent strictement sur votre appareil.`,
       draft: false,
       prerelease: false,
     }),
@@ -82,5 +86,5 @@ async function createReleaseAndUploadApk() {
 
 createReleaseAndUploadApk().catch((err) => {
   console.error('Error:', err);
+  process.exit(1);
 });
-
