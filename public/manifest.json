@@ -1,0 +1,22 @@
+{
+  "name": "SmartBudget AI - Gestion Financière",
+  "short_name": "Budget.AI",
+  "description": "Application mobile de gestion de budget personnel avec planification 50/30/20, suivi des dépenses, graphiques et Conseiller AI Expert.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

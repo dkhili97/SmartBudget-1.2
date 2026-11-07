@@ -1,0 +1,75 @@
+{
+  "entities": {
+    "UserBudget": {
+      "title": "User Budget State",
+      "description": "User financial planning data including income, items, and transactions",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth user UID"
+        },
+        "income": {
+          "type": "number",
+          "description": "Monthly net income"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Preferred currency"
+        },
+        "strategy": {
+          "type": "string",
+          "description": "Selected budgeting allocation strategy"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last synchronization timestamp"
+        }
+      },
+      "required": ["userId", "income", "currency"]
+    },
+    "AppReleaseManifest": {
+      "title": "Application Release & APK Update Manifest",
+      "description": "Stores the latest codebase signature, version, features manifest, and release notes for real-time APK update detection",
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Semantic version string"
+        },
+        "buildNumber": {
+          "type": "number",
+          "description": "Monotonic build number"
+        },
+        "buildHash": {
+          "type": "string",
+          "description": "SHA-256 signature of all source files"
+        },
+        "releaseNotes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of recent changes and features"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Release publication timestamp"
+        }
+      },
+      "required": ["version", "buildHash", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/userBudgets/{userId}": {
+      "schema": "UserBudget",
+      "description": "Stores the user's budget state indexed by their Auth UID"
+    },
+    "/appReleases/{releaseId}": {
+      "schema": "AppReleaseManifest",
+      "description": "Stores the latest application release manifest for exported APK update detection"
+    }
+  }
+}
