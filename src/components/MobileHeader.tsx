@@ -26,6 +26,7 @@ interface MobileHeaderProps {
   onOpenWalletTransfer?: () => void;
   onOpenBackupManager?: () => void;
   onOpenDocumentation?: () => void;
+  onOpenOnboarding?: () => void;
   onQuickCheckUpdate?: () => void;
   isCheckingUpdate?: boolean;
   hasUpdateAvailable?: boolean;
@@ -44,6 +45,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
   onOpenWalletTransfer,
   onOpenBackupManager,
   onOpenDocumentation,
+  onOpenOnboarding,
   onQuickCheckUpdate,
   isCheckingUpdate = false,
   hasUpdateAvailable,
@@ -247,6 +249,19 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
                   <Download className="w-4 h-4 text-slate-500" />
                   <span>Exporter le rapport</span>
                 </button>
+
+                {onOpenOnboarding && (
+                  <button
+                    onClick={() => {
+                      setShowMenu(false);
+                      onOpenOnboarding();
+                    }}
+                    className="w-full text-left px-3.5 py-2 hover:bg-emerald-50/70 flex items-center gap-2 font-bold text-slate-800"
+                  >
+                    <BookOpen className="w-4 h-4 text-emerald-600" />
+                    <span>Guide de Démarrage</span>
+                  </button>
+                )}
 
                 {onOpenDocumentation && (
                   <button

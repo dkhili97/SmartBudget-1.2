@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Plus, CheckCircle2 } from 'lucide-react';
 import { BudgetState, CategoryType, StrategyType, AIAuditResult, CustomRatios, UserAccount, SmartReminderConfig, AdvisorLog, AuditLog, ExpensePreset, Transaction, BudgetItem, MonthlyReportArchive, AppUpdateInfo, GitHubUpdateConfig } from './types';
-import { loadBudgetState, saveBudgetState, resetBudgetState, checkAndPerform12hBackup, getAutoBackups, getUnifiedProjectList, performCleanAppUpdate } from './lib/storage';
+import { loadBudgetState, saveBudgetState, resetBudgetState, checkAndPerform12hBackup, getAutoBackups, getUnifiedProjectList, performCleanAppUpdate, createCleanBudgetState } from './lib/storage';
 import { auth, onAuthStateChanged, saveUserBudgetToFirestore, loadUserBudgetFromFirestore, subscribeToUserBudget, publishReleaseManifestToFirestore, subscribeToAppReleaseManifest } from './lib/firebase';
 import { INSTALLED_APP_VERSION, INSTALLED_FEATURES_MANIFEST, computeFeatureDiff, detectRuntimeEnvironment, fetchWithMasterFallback } from './lib/versionManifest';
 import { checkGitHubReleases, triggerApkDownloadAndInstall } from './lib/apkUpdater';
@@ -27,6 +27,7 @@ import { SmartReminderBanner } from './components/SmartReminderBanner';
 import { UpdateNotificationBanner } from './components/UpdateNotificationBanner';
 import { ProjectsManagerModal } from './components/ProjectsManagerModal';
 import { DocumentationModal } from './components/DocumentationModal';
+import { OnboardingGuideModal } from './components/OnboardingGuideModal';
 import { AnimatedSplashScreen } from './components/AnimatedSplashScreen';
 
 export default function App() {
@@ -46,6 +47,9 @@ export default function App() {
   const [isBackupModalOpen, setIsBackupModalOpen] = useState(false);
   const [isProjectsManagerOpen, setIsProjectsManagerOpen] = useState(false);
   const [isDocumentationOpen, setIsDocumentationOpen] = useState(false);
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(() => {
+    return !localStorage.getItem('smartbudget_onboarding_done');
+  });
   const [isMobileFrame, setIsMobileFrame] = useState(false);
   const [auditResult, setAuditResult] = useState<AIAuditResult | null>(null);
   const [appliedNotice, setAppliedNotice] = useState<string | null>(null);
@@ -1466,6 +1470,28 @@ export default function App() {
     setTimeout(() => setAppliedNotice(null), 3500);
   };
 
+  const handleCompleteOnboarding = (config: {
+    currency: string;
+    income: number;
+    startClean: boolean;
+  }) => {
+    localStorage.setItem('smartbudget_onboarding_done', 'true');
+    if (config.startClean) {
+      const clean = createCleanBudgetState(config.currency, config.income);
+      setBudgetData(clean);
+      setAuditResult(null);
+      setAppliedNotice('✨ Votre budget vierge a été configuré avec succès !');
+    } else {
+      setBudgetData((prev) => ({
+        ...prev,
+        currency: config.currency,
+        income: config.income,
+      }));
+      setAppliedNotice('✨ Démo SmartBudget chargée !');
+    }
+    setTimeout(() => setAppliedNotice(null), 3500);
+  };
+
   const handleOpenQuickAdd = (category?: CategoryType, itemId?: string, initialType: 'expense' | 'income' = 'expense') => {
     setEditingTransaction(null);
     setQuickAddCategory(category);
@@ -1518,6 +1544,7 @@ export default function App() {
           onOpenWalletTransfer={() => setIsWalletModalOpen(true)}
           onOpenBackupManager={() => setIsBackupModalOpen(true)}
           onOpenDocumentation={() => setIsDocumentationOpen(true)}
+          onOpenOnboarding={() => setIsOnboardingOpen(true)}
           onQuickCheckUpdate={() => handleCheckForUpdates(undefined, undefined, true)}
           isCheckingUpdate={isCheckingUpdate}
           hasUpdateAvailable={hasUpdateAvailable}
@@ -1598,24 +1625,15 @@ export default function App() {
             />
           )}
 
-          {activeTab === 'advisor' && (
+          {(activeTab === 'advisor' || activeTab === 'audit') && (
             <TabAdvisor
-              budgetData={budgetData}
-              onApplyCustomRatios={handleUpdateCustomRatios}
-              onApplyItemBudget={handleApplyItemBudget}
-              onExecuteTransfer={handleExecuteTransfer}
-              onLogAdvisorInteraction={handleLogAdvisorInteraction}
-            />
-          )}
-
-          {activeTab === 'audit' && (
-            <TabAudit
               budgetData={budgetData}
               auditResult={auditResult}
               onSetAuditResult={setAuditResult}
               onApplyCustomRatios={handleUpdateCustomRatios}
               onApplyItemBudget={handleApplyItemBudget}
-              onLogAuditRun={handleLogAuditRun}
+              onExecuteTransfer={handleExecuteTransfer}
+              onLogAdvisorInteraction={handleLogAdvisorInteraction}
             />
           )}
         </main>
@@ -1748,6 +1766,14 @@ export default function App() {
       <DocumentationModal
         isOpen={isDocumentationOpen}
         onClose={() => setIsDocumentationOpen(false)}
+      />
+
+      <OnboardingGuideModal
+        isOpen={isOnboardingOpen}
+        onClose={() => setIsOnboardingOpen(false)}
+        onComplete={handleCompleteOnboarding}
+        currentCurrency={budgetData.currency}
+        currentIncome={budgetData.income}
       />
     </div>
   );

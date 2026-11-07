@@ -388,6 +388,54 @@ export async function performCleanAppUpdate(
   }
 }
 
+export function createCleanBudgetState(currency = 'TND', income = 0): BudgetState {
+  const currentMonth = new Date().toISOString().substring(0, 7);
+  const cleanState: BudgetState = {
+    ...INITIAL_BUDGET_STATE,
+    income: income || 0,
+    currency: currency || 'TND',
+    strategy: 'balanced',
+    selectedPeriodMonth: currentMonth,
+    customRatios: { needs: 50, wants: 30, savings: 20 },
+    items: [
+      { id: 'item-logement', name: 'Logement & Loyer', budget: Math.round(income * 0.25), category: 'needs' },
+      { id: 'item-factures', name: 'Factures (Électricité, Eau, Wifi)', budget: Math.round(income * 0.10), category: 'needs' },
+      { id: 'item-courses', name: 'Alimentation & Courses', budget: Math.round(income * 0.15), category: 'needs' },
+      { id: 'item-sorties', name: 'Cafés, Sorties & Resto', budget: Math.round(income * 0.15), category: 'wants' },
+      { id: 'item-loisirs', name: 'Loisirs & Achats', budget: Math.round(income * 0.15), category: 'wants' },
+      { id: 'item-epargne', name: 'Fonds de Réserve & Épargne', budget: Math.round(income * 0.20), category: 'savings' },
+    ],
+    transactions: [],
+    goals: [
+      {
+        id: 'goal-emergency',
+        title: 'Fonds de Réserve & Urgence',
+        category: 'emergency',
+        targetAmount: Math.max(1000, income * 3),
+        currentAmount: 0,
+        monthlyContribution: Math.round(income * 0.15),
+        targetDate: new Date(Date.now() + 180 * 86400000).toISOString().split('T')[0],
+        priority: 'high',
+        status: 'in_progress',
+        notes: 'Mon premier matelas de sécurité financière',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    ],
+    monthlyReports: [],
+    userAccount: {
+      name: 'Mon Profil',
+      email: 'local@smartbudget.app',
+      isLoggedIn: false,
+      syncMode: 'local',
+      lastSyncedAt: new Date().toISOString(),
+    },
+    lastUpdated: new Date().toISOString(),
+  };
+  saveBudgetState(cleanState, true);
+  return cleanState;
+}
+
 export function resetBudgetState(): BudgetState {
   localStorage.removeItem(STORAGE_KEY);
   saveBudgetState(INITIAL_BUDGET_STATE);

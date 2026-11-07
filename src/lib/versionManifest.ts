@@ -1,7 +1,7 @@
 import { FeatureManifestItem } from '../types';
 
-export const INSTALLED_APP_VERSION = '1.5.1';
-export const INSTALLED_BUILD_NUMBER = 151;
+export const INSTALLED_APP_VERSION = '1.6.0';
+export const INSTALLED_BUILD_NUMBER = 160;
 export const DEFAULT_MASTER_CLOUD_URL =
   'https://ais-pre-a6qgiudfqqbzdg5nrz5sfr-162483565558.europe-west2.run.app';
 
@@ -54,11 +54,11 @@ export const INSTALLED_FEATURES_MANIFEST: FeatureManifestItem[] = [
     addedInVersion: '1.5.0',
   },
   {
-    id: 'feat-animated-splash-logo',
-    title: 'Écran de Chargement Animé & Nouveau Logo SmartBudget',
-    description: 'Logo vectoriel moderne et splash screen immersif avec indicateur d\'état 100% hors-ligne.',
+    id: 'feat-clean-ux-onboarding-guide',
+    title: 'Navigation Simplifiée (5 Onglets) & Guide de Démarrage à Vide',
+    description: 'Interface épurée, écran de chargement minimaliste, guide onboarding pour budget vierge et fusion Conseiller/Diagnostic.',
     category: 'ux',
-    addedInVersion: '1.5.1',
+    addedInVersion: '1.6.0',
   },
 ];
 

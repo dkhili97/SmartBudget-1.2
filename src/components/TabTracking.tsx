@@ -356,9 +356,30 @@ export const TabTracking: React.FC<TabTrackingProps> = ({
         {/* Transaction Cards List */}
         <div className="space-y-2">
           {filteredTransactions.length === 0 ? (
-            <div className="p-8 text-center text-xs text-slate-400 border border-dashed border-slate-200 rounded-2xl">
-              Aucune transaction ne correspond à votre recherche.
-            </div>
+            budgetData.transactions.length === 0 ? (
+              <div className="p-8 text-center bg-slate-50 border border-dashed border-emerald-200 rounded-3xl space-y-3">
+                <div className="w-12 h-12 mx-auto rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center border border-emerald-200">
+                  <Plus className="w-6 h-6" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-sm font-bold text-slate-800">Journal de dépenses prêt</h4>
+                  <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                    Aucune dépense pour l'instant. Utilisez le bouton '+' ou les modèles rapides ci-dessus pour enregistrer vos premiers achats !
+                  </p>
+                </div>
+                <button
+                  onClick={() => onOpenQuickAdd('wants', undefined, 'expense')}
+                  className="py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl inline-flex items-center space-x-1.5 shadow-xs transition-all active:scale-95"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Ajouter une dépense</span>
+                </button>
+              </div>
+            ) : (
+              <div className="p-8 text-center text-xs text-slate-400 border border-dashed border-slate-200 rounded-2xl">
+                Aucune transaction ne correspond à votre recherche "{searchTerm}".
+              </div>
+            )
           ) : (
             filteredTransactions.map((tx) => {
               const item = budgetData.items.find((i) => i.id === tx.itemId);
