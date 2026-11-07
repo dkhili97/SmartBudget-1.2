@@ -69,8 +69,8 @@ jobs:
           if [[ "${{ github.ref }}" == refs/tags/* ]]; then
             TAG_NAME="${GITHUB_REF#refs/tags/}"
           else
-            SHORT_SHA=$(git rev-parse --short HEAD)
-            TAG_NAME="v1.5.${{ github.run_number }}-${SHORT_SHA}"
+            VERSION=$(node -p "require('./package.json').version || '1.6.0'")
+            TAG_NAME="v${VERSION}.${{ github.run_number }}"
           fi
           echo "tag_name=${TAG_NAME}" >> $GITHUB_OUTPUT
           echo "commit_msg=$(git log -1 --pretty=%B | head -n 1)" >> $GITHUB_OUTPUT
@@ -90,6 +90,7 @@ jobs:
             Votre application installée détectera automatiquement cette version et vous proposera de la télécharger !
           draft: false
           prerelease: false
+          make_latest: true
           files: release-artifacts/SmartBudget.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

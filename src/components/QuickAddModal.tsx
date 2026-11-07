@@ -233,7 +233,12 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
     e.preventDefault();
     const numAmount = parseFloat(amount);
     if (!numAmount || numAmount <= 0) return;
-    if (!itemId) return;
+
+    let targetItemId = itemId;
+    if (!targetItemId) {
+      const match = budgetData.items.find((i) => i.category === category);
+      targetItemId = match ? match.id : `item-${category}-${Date.now()}`;
+    }
 
     const trimmedDesc = desc.trim() || (txType === 'income' ? 'Revenu imprévu' : 'Dépense');
 
@@ -242,7 +247,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
       desc: trimmedDesc,
       amount: numAmount,
       category,
-      itemId,
+      itemId: targetItemId,
       date,
       time,
       notes,

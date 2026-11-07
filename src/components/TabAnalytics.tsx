@@ -246,8 +246,14 @@ export const TabAnalytics: React.FC<TabAnalyticsProps> = ({ budgetData }) => {
         </h3>
 
         {itemPieData.length === 0 ? (
-          <div className="p-12 text-center text-xs text-slate-400 border border-dashed border-slate-200 rounded-2xl">
-            Aucune dépense enregistrée pour afficher le graphique.
+          <div className="p-8 text-center bg-slate-50 border border-dashed border-slate-200 rounded-2xl space-y-2">
+            <div className="w-10 h-10 mx-auto rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+              <PieIcon className="w-5 h-5" />
+            </div>
+            <p className="text-xs font-bold text-slate-700">Aucune dépense enregistrée</p>
+            <p className="text-[11px] text-slate-400 max-w-xs mx-auto">
+              Ce graphique se construira automatiquement dès que vous enregistrerez vos premiers achats.
+            </p>
           </div>
         ) : (
           <div className="h-64 w-full">

@@ -270,7 +270,7 @@ export default function App() {
 
     // 1. Direct GitHub Releases Check (Primary check for SmartBudget APK updates)
     try {
-      const release = await checkGitHubReleases(ghConf?.lastInstalledVersion || appVersion, repoToUse);
+      const release = await checkGitHubReleases(INSTALLED_APP_VERSION, repoToUse);
       if (release) {
         const ghUpdateData: AppUpdateInfo = {
           hasUpdate: release.hasUpdate,
@@ -283,8 +283,6 @@ export default function App() {
           checkedAt: new Date().toISOString(),
         };
         setUpdateInfo(ghUpdateData);
-        if (release.version) setAppVersion(release.version);
-        if (release.tagName) setCurrentBuildHash(release.tagName);
 
         if (release.hasUpdate) {
           setHasUpdateAvailable(true);
@@ -776,9 +774,23 @@ export default function App() {
         newLogs = [log, ...newLogs];
       }
 
+      let updatedItems = prev.items || [];
+      if (tx.itemId && !updatedItems.some((i) => i.id === tx.itemId)) {
+        updatedItems = [
+          ...updatedItems,
+          {
+            id: tx.itemId,
+            name: tx.desc || 'Général',
+            budget: tx.amount,
+            category: tx.category || 'needs',
+          },
+        ];
+      }
+
       return {
         ...prev,
         income: updatedIncome,
+        items: updatedItems,
         transactions: [newTx, ...prev.transactions],
         strategyLogs: newLogs,
         reminderConfig: {

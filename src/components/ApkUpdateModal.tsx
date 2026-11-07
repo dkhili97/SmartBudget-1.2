@@ -53,7 +53,9 @@ export const ApkUpdateModal: React.FC<ApkUpdateModalProps> = ({
   if (!isOpen) return null;
 
   const hasUpdate = Boolean(updateInfo?.hasUpdate);
-  const resolvedApkDownloadUrl = updateInfo?.apkDownloadUrl || '';
+  const resolvedApkDownloadUrl =
+    updateInfo?.apkDownloadUrl ||
+    'https://github.com/dkhili97/SmartBudget-1.2/releases/latest/download/SmartBudget.apk';
   const newVersion = updateInfo?.version || currentVersion;
 
   const handleDownloadAndInstall = async () => {
@@ -171,7 +173,7 @@ export const ApkUpdateModal: React.FC<ApkUpdateModalProps> = ({
                 </p>
               </div>
 
-              <div className="pt-1">
+              <div className="pt-1 space-y-2">
                 <button
                   onClick={() => onCheckUpdate()}
                   disabled={isCheckingUpdate}
@@ -179,6 +181,24 @@ export const ApkUpdateModal: React.FC<ApkUpdateModalProps> = ({
                 >
                   <RefreshCw className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Vérifier à nouveau</span>
+                </button>
+
+                <button
+                  onClick={handleDownloadAndInstall}
+                  disabled={isUpdatingNow}
+                  className="w-full py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs border border-emerald-200 flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-60"
+                >
+                  {isUpdatingNow ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      <span>{apkInstallStatus || 'Téléchargement...'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-3.5 h-3.5 text-emerald-700" />
+                      <span>Télécharger &amp; Réinstaller l'APK</span>
+                    </>
+                  )}
                 </button>
               </div>
             </div>
