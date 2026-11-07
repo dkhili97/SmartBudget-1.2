@@ -128,3 +128,4 @@ export const SmartBudgetLogo: React.FC<SmartBudgetLogoProps> = ({
     </div>
   );
 };
+

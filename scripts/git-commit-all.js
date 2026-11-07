@@ -40,3 +40,4 @@ async function initAndCommit() {
 initAndCommit().catch((err) => {
   console.error('Git error:', err);
 });
+
