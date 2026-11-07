@@ -1,0 +1,6 @@
+{
+  "name": "SmartBudget Mobile & AI Financial Advisor",
+  "description": "Application mobile de gestion de budget personnel avec planification 50/30/20, suivi des dépenses, graphiques et Conseiller AI Expert Financier.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

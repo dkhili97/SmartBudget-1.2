@@ -1,0 +1,55 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportHeight="108"
+    android:viewportWidth="108">
+    <!-- Drop shadow -->
+    <path
+        android:pathData="M66,35 C66,28 58,24 50,24 C40,24 33,30 33,38 C33,48 43,50 53,53 C64,56 70,60 70,68 C70,78 61,82 50,82 C38,82 31,76 30,68"
+        android:strokeColor="#33000000"
+        android:strokeWidth="10"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <!-- S curve with bright gradient -->
+    <path
+        android:pathData="M65,34 C65,27 57,23 49,23 C39,23 32,29 32,37 C32,47 42,49 52,52 C63,55 69,59 69,67 C69,77 60,81 49,81 C37,81 30,75 29,67"
+        android:strokeWidth="8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:startX="29"
+                android:startY="81"
+                android:endX="69"
+                android:endY="23"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#34D399" />
+                <item android:offset="1.0" android:color="#FFFFFF" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Growth Bars -->
+    <path
+        android:pathData="M38,58 L38,70"
+        android:strokeColor="#88FFFFFF"
+        android:strokeWidth="4"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M48,50 L48,70"
+        android:strokeColor="#CCFFFFFF"
+        android:strokeWidth="4"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M58,40 L58,70"
+        android:strokeColor="#F59E0B"
+        android:strokeWidth="4"
+        android:strokeLineCap="round" />
+
+    <!-- Sparkle star -->
+    <path
+        android:pathData="M73,26 L75,30 L79,32 L75,34 L73,38 L71,34 L67,32 L71,30 Z"
+        android:fillColor="#FBBF24" />
+</vector>
